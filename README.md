@@ -28,7 +28,8 @@ Users should be able to:
 ![ScreenShot](Screenshot.png)
 
 ### Links
--   Live Site URL: https://dlee1993.github.io/FEM-rest-api/
+-   Github Repo: https://github.com/DLee1993/galleria-slideshow
+-   Live Site URL: https://dlee1993.github.io
 
 ## My process
 
