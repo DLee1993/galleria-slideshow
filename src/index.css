@@ -12,4 +12,14 @@
     body {
         @apply font-libre;
     }
+
+    article {
+        break-inside: avoid-column;
+    }
+}
+
+@layer components {
+    #art_grid_container{
+        columns: 250px;
+    }
 }
