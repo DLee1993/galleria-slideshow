@@ -19,7 +19,7 @@
 }
 
 @layer components {
-    #art_grid_container{
+    #art_grid_container {
         columns: 250px;
     }
 }
