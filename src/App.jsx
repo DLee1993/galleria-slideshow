@@ -28,7 +28,7 @@ const App = () => {
 
     const prevStyle = {
         position: "absolute",
-        bottom: "25px",
+        bottom: "20px",
         left: "auto",
         right: "50px",
         width: "30px",
@@ -38,7 +38,7 @@ const App = () => {
     };
     const nextStyle = {
         position: "absolute",
-        bottom: "25px",
+        bottom: "20px",
         right: "0px",
         width: "30px",
         height: "30px",
@@ -48,13 +48,13 @@ const App = () => {
 
     const properties = {
         prevArrow: (
-            <button style={{ ...prevStyle }}>
-                <img src={prev} alt="previous slide" aria-label="Previous Slide" data-type="prev" />
+            <button style={{ ...prevStyle }} data-type="prev">
+                <img src={prev} alt="previous slide" aria-label="Previous Slide" />
             </button>
         ),
         nextArrow: (
-            <button style={{ ...nextStyle }}>
-                <img src={next} alt="next slide" aria-label="Next Slide" data-type="next" />
+            <button style={{ ...nextStyle }} data-type="next">
+                <img src={next} alt="next slide" aria-label="Next Slide" />
             </button>
         ),
     };
@@ -74,7 +74,10 @@ const App = () => {
                     gallery ? "block" : "hidden"
                 }`}
             >
-                <span onClick={toggleGallery} className="text-white uppercase cursor-pointer pr-5">
+                <span
+                    onClick={toggleGallery}
+                    className="text-white uppercase cursor-pointer pr-5 text-xs"
+                >
                     close
                 </span>
                 <figure className="w-full flex justify-center items-center">
@@ -82,24 +85,26 @@ const App = () => {
                 </figure>
             </div>
             <header className="max-w-[calc(100%-3rem)] mx-auto flex justify-between items-center h-20 border-b-2 border-silver">
-                <img src={logo} alt="website name" />
+                <img src={logo} alt="website name" className="w-20 sm:w-24 md:w-28" />
                 <button
-                    className="uppercase font-bold fluid-xs text-grey hover:text-black transition-colors tracking-[1.9px] md:tracking-[2.57px]"
+                    className="uppercase font-bold fluid-xs text-grey hover:text-black transition-colors tracking-[1.9px] md:tracking-[2.57px] focus:outline-offset-8"
                     onClick={() => setSlideShow(!slideshow)}
                 >
                     {slideshow ? "stop slideshow" : "start slideshow"}
                 </button>
             </header>
-            <section className="max-w-[calc(100%-3rem)] mx-auto my-5">
+            <section className="w-[calc(100%-3rem)] max-w-[1200px] mx-auto my-5">
                 <section id="art_grid_container" className={!slideshow ? "block" : "hidden"}>
                     {galleryData.map((article, index) => (
                         <article
                             key={index}
-                            className="relative mb-5 hover:cursor-pointer hover:opacity-90 hover:scale-105 scale-100 transition-all"
+                            className="relative mb-5 hover:cursor-pointer hover:opacity-90 focus:opacity-90 hover:scale-105 focus:scale-105 scale-100 transition-all"
                             onClick={() => {
                                 setSlideShow(!slideshow);
                                 setSelectedIndex(index);
                             }}
+                            tabIndex={0}
+                            aria-label={article.description}
                         >
                             <figure className="bg-black">
                                 <img
@@ -116,12 +121,10 @@ const App = () => {
                     ))}
                 </section>
                 <section className={`${slideshow ? "block" : "hidden"}`}>
-                    {" "}
-                    {/**className={`${slideshow ? "block" : "hidden"}`} */}
                     <Fade
                         defaultIndex={selectedIndex}
                         ref={slideRef}
-                        autoplay={autoplaySlideshow}
+                        autoplay={false}
                         transitionDuration={500}
                         canSwipe={true}
                         pauseOnHover={false}
@@ -130,33 +133,57 @@ const App = () => {
                     >
                         {galleryData.map((slide, index) => (
                             <section key={index}>
-                                <figure className="relative">
-                                    <picture>
-                                        <source
-                                            media="(min-width: 900px)"
-                                            srcSet={slide.images.hero.large}
-                                        />
-                                        <source
-                                            media="(min-width: 650px)"
-                                            srcSet={slide.images.hero.small}
-                                        />
-                                        <source
-                                            media="(max-width: 649px)"
-                                            srcSet={slide.images.thumbnail}
-                                        />
-                                        <img src={slide.images.hero.large} alt="gallery"></img>
-                                    </picture>
-                                    <button
-                                        onClick={() => toggleGallery(slide.images.hero.small)}
-                                        className="flex justify-evenly items-center absolute top-5 sm:top-auto sm:bottom-5 left-5 text-white bg-grey hover:bg-grey/50 transition-colors w-36 h-10 uppercase text-xs tracking-widest"
-                                    >
-                                        <span>
-                                            <img src={expand} alt="view full image" />
+                                <section className="flex flex-wrap justify-evenly items-center h-screen">
+                                    <figure className="relative w-full max-w-[475px]">
+                                        <picture>
+                                            <source
+                                                media="(min-width: 900px)"
+                                                srcSet={slide.images.hero.large}
+                                            />
+                                            <source
+                                                media="(min-width: 650px)"
+                                                srcSet={slide.images.hero.small}
+                                            />
+                                            <source
+                                                media="(max-width: 649px)"
+                                                srcSet={slide.images.thumbnail}
+                                            />
+                                            <img
+                                                src={slide.images.hero.large}
+                                                alt="gallery"
+                                                className="w-full"
+                                            ></img>
+                                        </picture>
+                                        <button
+                                            onClick={() => toggleGallery(slide.images.hero.small)}
+                                            className="flex justify-evenly items-center absolute top-5 sm:top-auto sm:bottom-5 left-5 text-white bg-black hover:bg-black/50 transition-colors w-36 h-10 uppercase text-xs tracking-widest"
+                                        >
+                                            <span>
+                                                <img src={expand} alt="view full image" />
+                                            </span>
+                                            view image
+                                        </button>
+                                    </figure>
+                                    <section className="relative">
+                                        <span className="absolute top-10 right-0 text-8xl md:text-[200px] text-silver -z-10">
+                                            {slide.year}
                                         </span>
-                                        view image
-                                    </button>
-                                </figure>
-                                <aside className="flex justify-center items-start flex-col h-20 mt-5 border-t-2 border-silver">
+                                        <section>
+                                            <article className="text-grey font-bold leading-7 text-sm md:max-w-[350px]">
+                                                {slide.description}
+                                            </article>
+                                            <a
+                                                href={slide.source}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="inline-block text-[9px] mt-10 font-bold uppercase underline text-grey hover:text-black transition-colors tracking-widest"
+                                            >
+                                                go to source
+                                            </a>
+                                        </section>
+                                    </section>
+                                </section>
+                                <aside className="flex justify-center items-start flex-col mt-5 h-20 border-t-2 border-silver">
                                     <p>{slide.name}</p>
                                     <p>{slide.artist.name}</p>
                                 </aside>
