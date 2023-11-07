@@ -4,12 +4,15 @@ import galleryData from "./assets/dataset/data.json";
 import { Fade } from "react-slideshow-image";
 import prev from "./assets/shared/icon-back-button.svg";
 import next from "./assets/shared/icon-next-button.svg";
+import expand from "./assets/shared/icon-view-image.svg";
 import "react-slideshow-image/dist/styles.css";
 const App = () => {
     const slideRef = useRef(null);
     const [slideshow, setSlideShow] = useState(false);
     const [autoplaySlideshow, setAutoplaySlideshow] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [gallery, setGallery] = useState(false);
+    const [galleryImage, setGalleryImage] = useState("");
 
     useEffect(() => {
         slideRef.current.goTo(parseInt(selectedIndex));
@@ -56,8 +59,28 @@ const App = () => {
         ),
     };
 
+    const toggleGallery = (e) => {
+        if (e) {
+            setGalleryImage(e);
+        }
+        setGallery(!gallery);
+        setAutoplaySlideshow(!autoplaySlideshow);
+    };
+
     return (
-        <main>
+        <main className="relative">
+            <div
+                className={`fixed z-50 w-full h-screen bg-black/90 flex justify-evenly items-end flex-col ${
+                    gallery ? "block" : "hidden"
+                }`}
+            >
+                <span onClick={toggleGallery} className="text-white uppercase cursor-pointer pr-5">
+                    close
+                </span>
+                <figure className="w-full flex justify-center items-center">
+                    <img src={galleryImage} alt="gallery image" />
+                </figure>
+            </div>
             <header className="max-w-[calc(100%-3rem)] mx-auto flex justify-between items-center h-20 border-b-2 border-silver">
                 <img src={logo} alt="website name" />
                 <button
@@ -72,7 +95,7 @@ const App = () => {
                     {galleryData.map((article, index) => (
                         <article
                             key={index}
-                            className="relative mb-5 hover:cursor-pointer hover:opacity-75 hover:scale-105 scale-100 transition-all"
+                            className="relative mb-5 hover:cursor-pointer hover:opacity-90 hover:scale-105 scale-100 transition-all"
                             onClick={() => {
                                 setSlideShow(!slideshow);
                                 setSelectedIndex(index);
@@ -93,17 +116,46 @@ const App = () => {
                     ))}
                 </section>
                 <section className={`${slideshow ? "block" : "hidden"}`}>
+                    {" "}
+                    {/**className={`${slideshow ? "block" : "hidden"}`} */}
                     <Fade
                         defaultIndex={selectedIndex}
-                        autoplay={autoplaySlideshow}
                         ref={slideRef}
+                        autoplay={autoplaySlideshow}
+                        transitionDuration={500}
                         canSwipe={true}
+                        pauseOnHover={false}
                         prevArrow={properties.prevArrow}
                         nextArrow={properties.nextArrow}
                     >
                         {galleryData.map((slide, index) => (
                             <section key={index}>
-                                <img src={slide.images.gallery} alt="" />
+                                <figure className="relative">
+                                    <picture>
+                                        <source
+                                            media="(min-width: 900px)"
+                                            srcSet={slide.images.hero.large}
+                                        />
+                                        <source
+                                            media="(min-width: 650px)"
+                                            srcSet={slide.images.hero.small}
+                                        />
+                                        <source
+                                            media="(max-width: 649px)"
+                                            srcSet={slide.images.thumbnail}
+                                        />
+                                        <img src={slide.images.hero.large} alt="gallery"></img>
+                                    </picture>
+                                    <button
+                                        onClick={() => toggleGallery(slide.images.hero.small)}
+                                        className="flex justify-evenly items-center absolute top-5 sm:top-auto sm:bottom-5 left-5 text-white bg-grey hover:bg-grey/50 transition-colors w-36 h-10 uppercase text-xs tracking-widest"
+                                    >
+                                        <span>
+                                            <img src={expand} alt="view full image" />
+                                        </span>
+                                        view image
+                                    </button>
+                                </figure>
                                 <aside className="flex justify-center items-start flex-col h-20 mt-5 border-t-2 border-silver">
                                     <p>{slide.name}</p>
                                     <p>{slide.artist.name}</p>
