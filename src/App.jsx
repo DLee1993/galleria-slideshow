@@ -18,17 +18,15 @@ const App = () => {
         setAutoplaySlideshow(!autoplaySlideshow);
 
         setTimeout(() => {
-            console.log("timeout");
             setAutoplaySlideshow(true);
         }, 30000);
     }
 
     const toggleGallery = (e) => {
-        setGallery(!gallery);
-        setAutoplaySlideshow(!autoplaySlideshow);
-
         if (e) {
             setGalleryImage(e);
+            setGallery(!gallery);
+            setAutoplaySlideshow(!autoplaySlideshow);
         } else {
             setGallery(!gallery);
         }
@@ -99,62 +97,74 @@ const App = () => {
                     totalSlides={galleryData.length}
                     currentSlide={selectedIndex}
                     isPlaying={autoplaySlideshow}
-                    className={slideshow ? "block relative h-screen" : "hidden"}
+                    className={slideshow ? "block" : "hidden"}
                 >
-                    <Slider draggable>
-                        {galleryData.map((slide, index) => (
-                            <Slide key={index} index={index}>
-                                <section className="h-screen flex justify-between items-start flex-col">
-                                    <section className="w-full flex justify-between items-center flex-wrap min-h-[475px]">
-                                        <section className="relative mx-auto md:mx-0 md:w-1/2">
-                                            <button
-                                                className="absolute top-2 left-2 sm:top-auto sm:bottom-4 w-36 h-10 bg-black/50 hover:bg-black/25 transition-colors flex justify-evenly items-center uppercase text-white tracking-[1.9px] md:tracking-[2.57px] fluid-xs"
-                                                onClick={() =>
-                                                    toggleGallery(slide.images.hero.small)
-                                                }
-                                            >
-                                                <img src={expand} alt="view gallery image" />
-                                                <p>view image</p>
-                                            </button>
-                                            <picture>
-                                                <source
-                                                    srcSet={slide.images.hero.small}
-                                                    media="(max-width: 700px)"
-                                                />
-                                                <source
-                                                    srcSet={slide.images.hero.small}
-                                                    media="(min-width: 701px)"
-                                                />
-                                                <img
-                                                    src={slide.images.hero.large}
-                                                    alt="gallery image"
-                                                />
-                                            </picture>
+                    <div className="relative">
+                        <Slider draggable>
+                            {galleryData.map((slide, index) => (
+                                <Slide key={index} index={index}>
+                                    <section className="h-full flex justify-between items-start flex-col">
+                                        <section className="w-full h-full flex justify-between items-center flex-wrap">
+                                            <section className="relative mx-auto md:mx-0 md:w-1/2">
+                                                <button
+                                                    className="absolute top-2 left-2 sm:top-auto sm:bottom-4 w-36 h-10 bg-black/50 hover:bg-black/25 transition-colors flex justify-evenly items-center uppercase text-white tracking-[1.9px] md:tracking-[2.57px] fluid-xs"
+                                                    onClick={() =>
+                                                        toggleGallery(slide.images.hero.small)
+                                                    }
+                                                >
+                                                    <img src={expand} alt="view gallery image" />
+                                                    <p>view image</p>
+                                                </button>
+                                                <picture>
+                                                    <source
+                                                        srcSet={slide.images.hero.small}
+                                                        media="(max-width: 700px)"
+                                                    />
+                                                    <source
+                                                        srcSet={slide.images.hero.small}
+                                                        media="(min-width: 701px)"
+                                                    />
+                                                    <img
+                                                        src={slide.images.hero.large}
+                                                        alt="gallery image"
+                                                    />
+                                                </picture>
+                                            </section>
+                                            {/* <section className="relative md:max-w-[500px] text-justify md:text-left text-grey leading-7 text-sm py-20">
+                                            <p className="absolute top-0 left-0 text-9xl -z-10 text-lightGrey">{slide.year}</p>
+                                            <p>{slide.description}</p>
+                                            <aside className="mt-2 text-xs uppercase underline text-grey tracking-widest">
+                                                <a
+                                                    href={slide.source}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    go to source
+                                                </a>
+                                            </aside>
+                                        </section> */}
                                         </section>
-                                        <section className="md:max-w-[350px] mt-5 md:mt-0 text-justify md:text-left text-grey leading-7 text-sm">
-                                            {slide.description}
-                                        </section>
+                                        <footer className="flex justify-between items-center w-full min-h-[5rem] mt-5 border-t-2 border-lightGrey">
+                                            <section>
+                                                <p className="font-bold fluid-lg mb-2">
+                                                    {slide.artist.name}
+                                                </p>
+                                                <p className="fluid-sm">{slide.name}</p>
+                                            </section>
+                                        </footer>
                                     </section>
-                                    <footer className="flex justify-between items-center w-full min-h-[5rem] mt-5 border-t-2 border-lightGrey">
-                                        <section>
-                                            <p className="font-bold fluid-lg mb-2">
-                                                {slide.artist.name}
-                                            </p>
-                                            <p className="fluid-sm">{slide.name}</p>
-                                        </section>
-                                    </footer>
-                                </section>
-                            </Slide>
-                        ))}
-                    </Slider>
-                    <section className="absolute bottom-0 right-0 h-[78px] flex justify-center items-center bg-white">
-                        <ButtonBack className="mr-5" onClick={resetAutoPlay}>
-                            <img src={prev} alt="previous slide" />
-                        </ButtonBack>
-                        <ButtonNext onClick={resetAutoPlay}>
-                            <img src={next} alt="next slide" />
-                        </ButtonNext>
-                    </section>
+                                </Slide>
+                            ))}
+                        </Slider>
+                        <section className="absolute bottom-0 px-4 right-0 h-[76px] flex justify-center items-center bg-white">
+                            <ButtonBack className="mr-10">
+                                <img src={prev} alt="previous slide" />
+                            </ButtonBack>
+                            <ButtonNext onClick={resetAutoPlay}>
+                                <img src={next} alt="next slide" />
+                            </ButtonNext>
+                        </section>
+                    </div>
                 </CarouselProvider>
             </section>
         </main>
