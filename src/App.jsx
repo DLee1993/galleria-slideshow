@@ -14,9 +14,9 @@ const App = () => {
     const [galleryImage, setGalleryImage] = useState("");
 
     function resetAutoPlay() {
-        setAutoplaySlideshow(!autoplaySlideshow);
-
+        setAutoplaySlideshow(false);
         setTimeout(() => {
+            console.log("autoplay reset");
             setAutoplaySlideshow(true);
         }, 30000);
     }
@@ -24,10 +24,10 @@ const App = () => {
     const toggleGallery = (e) => {
         if (e) {
             setGalleryImage(e);
-            setGallery(!gallery);
-            setAutoplaySlideshow(!autoplaySlideshow);
+            setGallery(true);
+            setAutoplaySlideshow(false);
         } else {
-            setGallery(!gallery);
+            setGallery(false);
         }
     };
 
@@ -44,7 +44,10 @@ const App = () => {
                 }`}
             >
                 <span
-                    onClick={toggleGallery}
+                    onClick={() => {
+                        setGallery(false);
+                        setAutoplaySlideshow(true);
+                    }}
                     className="absolute top-5 right-5 text-white uppercase cursor-pointer text-xs"
                 >
                     close
@@ -103,7 +106,7 @@ const App = () => {
                             {galleryData.map((slide, index) => (
                                 <Slide key={index} index={index}>
                                     <section className="h-full flex justify-between items-start flex-col">
-                                        <section className="w-full flex justify-between items-start flex-col lg:flex-row bg-red-300 gap-x-4">
+                                        <section className="w-full flex justify-between items-start flex-col lg:flex-row gap-x-4">
                                             <section className="relative w-full h-full">
                                                 <section className="relative max-w-xl">
                                                     <img
@@ -115,7 +118,7 @@ const App = () => {
                                                         onClick={() =>
                                                             toggleGallery(slide.images.hero.small)
                                                         }
-                                                        className="flex justify-evenly items-center absolute bottom-4 left-2 w-[9.5rem] h-10 bg-black/60 hover:bg-white/25 transition-opacity text-white uppercase text-xs cursor-pointer"
+                                                        className="flex justify-evenly items-center absolute top-4 sm:top-auto sm:bottom-4 left-2 w-[9.5rem] h-10 bg-black/60 hover:bg-white/25 transition-opacity text-white uppercase text-xs cursor-pointer"
                                                     >
                                                         <img
                                                             src={expand}
@@ -124,18 +127,39 @@ const App = () => {
                                                         view image
                                                     </p>
                                                 </section>
-                                                <section className="bg-orange-600 sm:absolute sm:top-0 sm:right-0">
-                                                    <p>
-                                                        <span>{slide.name}</span>
-                                                        <span>{slide.artist.name}</span>
+                                                <section className="xl:h-full flex flex-col justify-between items-start sm:items-end lg:items-center -mt-10 relative z-50 sm:absolute sm:top-0 sm:right-0">
+                                                    <p className="bg-white flex flex-col py-10 px-5">
+                                                        <span className="font-bold fluid-2xl md:fluid-4xl max-w-sm">
+                                                            {slide.name}
+                                                        </span>
+                                                        <span className="text-grey">
+                                                            {slide.artist.name}
+                                                        </span>
                                                     </p>
-                                                    <p>floating artist image</p>
+                                                    <img
+                                                        src={slide.artist.image}
+                                                        alt="artist self portrait"
+                                                        className="mt-2 max-w-xs"
+                                                    />
                                                 </section>
                                             </section>
-                                            <section className="bg-blue-600 min-w-full lg:min-w-[350px]">
-                                                <p>slide year</p>
-                                                <p>slide description</p>
-                                                <p>slide link</p>
+                                            <section className="relative flex justify-center items-center min-w-full h-full lg:min-w-[400px] pt-20 lg:py-0">
+                                                <p className="absolute top-0 right-0 md:right-auto md:left-0 lg:left-auto lg:right-0 fluid-8xl text-silver font-bold -z-10">
+                                                    {slide.year}
+                                                </p>
+                                                <article className="max-w-[400px]">
+                                                    <p className="text-grey text-sm leading-7">
+                                                        {slide.description}
+                                                    </p>
+                                                    <a
+                                                        href={slide.source}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="uppercase text-[9px] text-grey underline tracking-widest block mt-10"
+                                                    >
+                                                        go to source
+                                                    </a>
+                                                </article>
                                             </section>
                                         </section>
                                         <footer className="flex justify-between items-center w-full min-h-[5rem] mt-5 border-t-2 border-lightGrey">
@@ -151,7 +175,7 @@ const App = () => {
                             ))}
                         </Slider>
                         <section className="absolute bottom-0 px-4 right-0 h-[76px] flex justify-center items-center bg-white">
-                            <ButtonBack className="mr-10">
+                            <ButtonBack className="mr-10" onClick={resetAutoPlay}>
                                 <img src={prev} alt="previous slide" />
                             </ButtonBack>
                             <ButtonNext onClick={resetAutoPlay}>
