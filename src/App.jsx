@@ -2,7 +2,6 @@ import { useState } from "react";
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from "pure-react-carousel";
 import logo from "./assets/shared/logo.svg";
 import galleryData from "./assets/dataset/data.json";
-import "pure-react-carousel/dist/react-carousel.es.css";
 import prev from "./assets/shared/icon-back-button.svg";
 import next from "./assets/shared/icon-next-button.svg";
 import expand from "./assets/shared/icon-view-image.svg";
@@ -104,45 +103,40 @@ const App = () => {
                             {galleryData.map((slide, index) => (
                                 <Slide key={index} index={index}>
                                     <section className="h-full flex justify-between items-start flex-col">
-                                        <section className="w-full h-full flex justify-between items-center flex-wrap">
-                                            <section className="relative mx-auto md:mx-0 md:w-1/2">
-                                                <button
-                                                    className="absolute top-2 left-2 sm:top-auto sm:bottom-4 w-36 h-10 bg-black/50 hover:bg-black/25 transition-colors flex justify-evenly items-center uppercase text-white tracking-[1.9px] md:tracking-[2.57px] fluid-xs"
-                                                    onClick={() =>
-                                                        toggleGallery(slide.images.hero.small)
-                                                    }
-                                                >
-                                                    <img src={expand} alt="view gallery image" />
-                                                    <p>view image</p>
-                                                </button>
-                                                <picture>
-                                                    <source
-                                                        srcSet={slide.images.hero.small}
-                                                        media="(max-width: 700px)"
-                                                    />
-                                                    <source
-                                                        srcSet={slide.images.hero.small}
-                                                        media="(min-width: 701px)"
-                                                    />
+                                        <section className="w-full flex justify-between items-start flex-col lg:flex-row bg-red-300 gap-x-4">
+                                            <section className="relative w-full h-full">
+                                                <section className="relative max-w-xl">
                                                     <img
                                                         src={slide.images.hero.large}
-                                                        alt="gallery image"
+                                                        alt=""
+                                                        className="w-full"
                                                     />
-                                                </picture>
+                                                    <p
+                                                        onClick={() =>
+                                                            toggleGallery(slide.images.hero.small)
+                                                        }
+                                                        className="flex justify-evenly items-center absolute bottom-4 left-2 w-[9.5rem] h-10 bg-black/60 hover:bg-white/25 transition-opacity text-white uppercase text-xs cursor-pointer"
+                                                    >
+                                                        <img
+                                                            src={expand}
+                                                            alt="expand gallery image"
+                                                        />
+                                                        view image
+                                                    </p>
+                                                </section>
+                                                <section className="bg-orange-600 sm:absolute sm:top-0 sm:right-0">
+                                                    <p>
+                                                        <span>{slide.name}</span>
+                                                        <span>{slide.artist.name}</span>
+                                                    </p>
+                                                    <p>floating artist image</p>
+                                                </section>
                                             </section>
-                                            {/* <section className="relative md:max-w-[500px] text-justify md:text-left text-grey leading-7 text-sm py-20">
-                                            <p className="absolute top-0 left-0 text-9xl -z-10 text-lightGrey">{slide.year}</p>
-                                            <p>{slide.description}</p>
-                                            <aside className="mt-2 text-xs uppercase underline text-grey tracking-widest">
-                                                <a
-                                                    href={slide.source}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    go to source
-                                                </a>
-                                            </aside>
-                                        </section> */}
+                                            <section className="bg-blue-600 min-w-full lg:min-w-[350px]">
+                                                <p>slide year</p>
+                                                <p>slide description</p>
+                                                <p>slide link</p>
+                                            </section>
                                         </section>
                                         <footer className="flex justify-between items-center w-full min-h-[5rem] mt-5 border-t-2 border-lightGrey">
                                             <section>
