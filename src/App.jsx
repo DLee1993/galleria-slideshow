@@ -13,6 +13,7 @@ const App = () => {
     const [gallery, setGallery] = useState(false);
     const [galleryImage, setGalleryImage] = useState("");
 
+
     function resetAutoPlay() {
         setAutoplaySlideshow(false);
         setTimeout(() => {
