@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from "pure-react-carousel";
 import logo from "./assets/shared/logo.svg";
-import galleryData from "./assets/dataset/data.json";
+import galleryData from "./data.json";
 import prev from "./assets/shared/icon-back-button.svg";
 import next from "./assets/shared/icon-next-button.svg";
 import expand from "./assets/shared/icon-view-image.svg";
