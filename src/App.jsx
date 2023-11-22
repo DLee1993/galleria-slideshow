@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from "pure-react-carousel";
-import logo from "./assets/shared/logo.svg";
+import logo from "../public/assets/shared/logo.svg";
 import galleryData from "./data.json";
-import prev from "./assets/shared/icon-back-button.svg";
-import next from "./assets/shared/icon-next-button.svg";
-import expand from "./assets/shared/icon-view-image.svg";
+import prev from "../public/assets/shared/icon-back-button.svg";
+import next from "../public/assets/shared/icon-next-button.svg";
+import expand from "../public/assets/shared/icon-view-image.svg";
 
 const App = () => {
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -12,7 +12,6 @@ const App = () => {
     const [autoplaySlideshow, setAutoplaySlideshow] = useState(false);
     const [gallery, setGallery] = useState(false);
     const [galleryImage, setGalleryImage] = useState("");
-
 
     function resetAutoPlay() {
         setAutoplaySlideshow(false);
